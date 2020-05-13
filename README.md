@@ -1,5 +1,3 @@
-<img src="https://bit.ly/2VnXWr2" alt="Ironhack Logo" width="100" align="center"/>
-
 <img src="https://www.sketch.ca/sketchPub/uploads/2019/03/radical-art-of-young-people-2000x940.jpg" alt="ART" width="1000" height="200" align="center"/>
 
 # Projecto final: Arte
@@ -19,6 +17,7 @@ Mar Lizana Atienza
 4. [Results](#id4)
 5. [Bibliografía](#id5)
 
+<hr style="color: #7acaff;" width="50%" />
 
 <a name="project"></a>
 
@@ -26,6 +25,7 @@ Mar Lizana Atienza
 
 Crear una red neuronal convolucional para reconocer a los artistas y su movimiento. Como EXTRA me gustaría poder crear también un sistema de recomendación de forma que puedas obtener como output no solo el artista y el movimiento al que pertenece, también una selección de cuadros similares.
 
+<hr style="color: #7acaff;" width="50%" />
 <a name="dataset"></a>
 
 ## Dataset<a name="id2"></a>
@@ -58,27 +58,54 @@ Hemos seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www
 * **resized.zip**:
     Subset con imágenes de menor calidad para que los modelos vayan mejor.
 
+<hr style="color: #7acaff;" width="50%" />
 <a name="workflow"></a>
 
 ## Workflow<a name="id3"></a>
 
 El recorrido del proyecto es el siguiente:
 
-1. Análisis del proyecto
-2. EDA
-3. Data Wrangling
-4. Choosing a Model
-5. Fine Tuning
-6. Sistema de recomendación(EXTRA)
 
+1. [Análisis del proyecto](#id6)
+2. [EDA](#id7)
+3. [Data Wrangling](#id8)
+4. [Choosing a Model](#id9)
+5. [Fine Tuning](#id10)
+6. [Sistema de recomendación(EXTRA)](#id111)
+
+### Análisis del proyecto<a name="id6"></a>
+
+### EDA<a name="id7"></a>
+
+<img src="img/grafo.png" alt="Grafo"/>
+
+<img src="img/random_pictures.png" alt="Random"/>
+
+
+### Data Wrangling<a name="id8"></a>
+
+### Choosing a Model<a name="id9"></a>
+
+### Fine Tuning<a name="id10"></a>
+
+### Sistema de recomendación(EXTRA)<a name="id11"></a>
+
+<hr style="color: #7acaff;" width="50%" />
 <a name="results"></a>
 
 ## Results<a name="id4"></a>
 
 
 
+<hr style="color: #7acaff;" width="50%" />
+<a name="bibliografia"></a>
+
 ## Bibliografía<a name="id5"></a>
 
 * Evans, O. (2019). Sensory Optimization: Neural Networks as a Model for Understanding and Creating Art. Recuperado de https://owainevans.github.io/visual_aesthetics/sensory-optimization.html
 
 <img src="https://www.sketch.ca/sketchPub/uploads/2019/03/radical-art-of-young-people-2000x940.jpg" alt="ART" width="1000" height="50" align="center"/>
+
+<hr style="color: #7acaff;" width="50%" />
+
+<img src="https://bit.ly/2VnXWr2" alt="Ironhack Logo" width="100" align="center"/>
