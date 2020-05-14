@@ -30,7 +30,7 @@ Crear una red neuronal convolucional para reconocer a los artistas y su movimien
 
 ## Dataset<a name="id2"></a>
 
-Hemos seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www.kaggle.com/dannielr/marvel-superheroes/">los 50 artistas más influyentes</a> de la historia del arte. Se trata de una colección de obras de arte y un conjunto de datos con información básica recuperada de wikipedia en formato CSV. 
+Hemos seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www.kaggle.com/ikarus777/best-artworks-of-all-time">los 50 artistas más influyentes</a> de la historia del arte. Se trata de una colección de obras de arte y un conjunto de datos con información básica recuperada de wikipedia en formato CSV. 
 
 * **artists.csv**:
 
