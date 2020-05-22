@@ -84,6 +84,9 @@ El recorrido del proyecto es el siguiente:
 
 ### Data Wrangling<a name="id8"></a>
 
+* Aumento de los registros de artistas con menos obras. Data Augmentation con ImageDataGenerator.
+* Estandarización de las imágenes.
+
 ### Choosing a Model<a name="id9"></a>
 
 ### Fine Tuning<a name="id10"></a>
@@ -103,6 +106,8 @@ El recorrido del proyecto es el siguiente:
 ## Bibliografía<a name="id5"></a>
 
 * Evans, O. (2019). Sensory Optimization: Neural Networks as a Model for Understanding and Creating Art. Recuperado de https://owainevans.github.io/visual_aesthetics/sensory-optimization.html
+
+* Utrera Brugal, Jesús (2019). Tratamiento de imágenes usando ImageDataGenerator en Keras. Recuperado de https://enmilocalfunciona.io/author/jesus/
 
 <img src="https://www.sketch.ca/sketchPub/uploads/2019/03/radical-art-of-young-people-2000x940.jpg" alt="ART" width="1000" height="50" align="center"/>
 
