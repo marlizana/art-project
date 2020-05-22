@@ -89,6 +89,13 @@ El recorrido del proyecto es el siguiente:
 
 ### Choosing a Model<a name="id9"></a>
 
+* Red Neuronal Simple
+* Redes Convolucionales
+* VGG-16
+* ResNet
+* DenseNet121
+* NASNet
+
 ### Fine Tuning<a name="id10"></a>
 
 ### Sistema de recomendación(EXTRA)<a name="id11"></a>
