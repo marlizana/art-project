@@ -97,8 +97,7 @@ Podemos observar por ejemplo que disponemos de más de 800 cuadros de Van Gogh, 
 
 * Empezaremos probando con una selección de artistas que tengan el número de obras más balanceadas. Primero con una selección de los 5 pintores con más registros para luego ir ampliando.
 
-<img src="img/countplot5.jpeg" alt="countplot5"/>
-<img src="img/countplot10.jpeg" alt="countplot10"/>
+<img src="img/countplot5.jpeg" alt="countplot5"/> <img src="img/countplot10.jpeg" alt="countplot10"/>
 
 ### Separar *train*,*test* y *validation*
 
