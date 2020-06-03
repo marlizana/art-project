@@ -125,8 +125,6 @@ Ahora estableceremos los parámetros para la creación de nuevas imagenes a part
 * **fill_mode**: Cuando a la imagen se le aplica una rotación cambia su aspecto, para mantener el mismo aspecto se tienen que rellenar los pixeles faltantes, con la opción nearest los pixeles cercanos se repiten para rellenar las areas faltantes.
 
 <img src="img/dataaugmentation.jpeg" alt="full"/>
-<img src="img/dataaugmentation1.jpeg" alt="ej1"/>
-<img src="img/dataaugmentation2.jpeg" alt="ej2"/>
 
 ### Elegir el modelo<a name="id9"></a>
 
