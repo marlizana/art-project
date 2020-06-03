@@ -71,7 +71,7 @@ El recorrido del proyecto es el siguiente:
 3. [Data Wrangling](#id8)
 4. [Elegir un modelo](#id9)
 5. [Fine Tuning](#id10)
-6. [Sistema de recomendación(EXTRA)](#id111)
+6. [Conclusiones](#id111)
 
 ### Análisis del proyecto<a name="id6"></a>
 
@@ -402,4 +402,3 @@ A la función de creación de la red deberemos pasarle el parámetro <code>layer
 
 <hr style="color: #7acaff;" width="50%" />
 
-<img src="https://bit.ly/2VnXWr2" alt="fondo" width="100" align="center"/>
