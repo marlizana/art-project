@@ -97,8 +97,7 @@ Podemos observar por ejemplo que disponemos de más de 800 cuadros de Van Gogh, 
 
 * Empezaremos probando con una selección de artistas que tengan el número de obras más balanceadas. Primero con una selección de los 5 pintores con más registros para luego ir ampliando.
 
-<img src="img/countplot5.jpeg" alt="countplot5"/>
-<img src="img/countplot10.jpeg" alt="countplot10"/>
+<img src="img/countplot5.jpeg" alt="countplot5"/><img src="img/countplot10.jpeg" alt="countplot10"/>
 
 ### Separar *train*,*test* y *validation*
 
@@ -125,11 +124,7 @@ Ahora estableceremos los parámetros para la creación de nuevas imagenes a part
 * **fill_mode**: Cuando a la imagen se le aplica una rotación cambia su aspecto, para mantener el mismo aspecto se tienen que rellenar los pixeles faltantes, con la opción nearest los pixeles cercanos se repiten para rellenar las areas faltantes.
 
 <img src="img/dataaugmentation.jpeg" alt="full"/>
-<<<<<<< HEAD
-<img src="img/dataaugmentation1.jpeg" alt="ej1"/>
-<img src="img/dataaugmentation2.jpeg" alt="ej2"/>
-=======
->>>>>>> 76a3453303841d5e3e5ad2fb93766d33a27c406a
+
 
 ### Elegir el modelo<a name="id9"></a>
 
@@ -375,9 +370,11 @@ El entreno se ha realizado en 52 *epochs* de 5 segundo. Un tiempo total de menos
 
 En el primer gráfico se presenta la *ccuracy* obtenida en cada *epoch*, tanto para los datos de entrenamiento como los de test. En el segundo gráfico vemos la evolución en cada epoch de la *loss* para los dos conjuntos de datos. Obtenemos los mejores resultados hasta el momento.
 
-<img src="img/imagenet_graf.png" alt="imagenet_graf"/>
+<img src="img/imagenet_graf.jpg" alt="imagenet_graf"/>
 
 ##### Predicción del modelo
+
+
 ##### Conclusiones
 
 #### NasNET<a name="id348"></a>
