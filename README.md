@@ -370,7 +370,7 @@ El entreno se ha realizado en 52 *epochs* de 5 segundo. Un tiempo total de menos
 
 En el primer gráfico se presenta la *ccuracy* obtenida en cada *epoch*, tanto para los datos de entrenamiento como los de test. En el segundo gráfico vemos la evolución en cada epoch de la *loss* para los dos conjuntos de datos. Obtenemos los mejores resultados hasta el momento.
 
-<img src="img/imagenet_graf.jpg" alt="imagenet_graf"/>
+<img src="img/imagenet_graf.jpeg" alt="imagenet_graf"/>
 
 ##### Predicción del modelo
 
