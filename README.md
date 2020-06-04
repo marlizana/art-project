@@ -401,13 +401,13 @@ Al entrenar el modelo vemos que este se ha parado en el *epoch* 37. A 16 segundo
 
 La función de pérdida y el error medio cuadrático presentan buenas cifras y estás van descendiendo a lo largo del entreno. La *accuracy* también mejora hasta el *epoch* 30 que se estanca en el conjunto de validación.
 
-<img src="img/nasnet_graf.jpg" alt="nasnet_graf"/>
+<img src="img/nasnet_graf.jpeg" alt="nasnet_graf"/>
 
 ##### Predicción del modelo
 
 Podemos observar esa diagonal descendente en la matriz de confusión indicador de unos buenos resultados. En el <code>classification_report</code> vemos como *Auguste Renoir* y *Pablo Picasso* son los que peor clasifica, esto podría deberse a que tienen un menor soporte en el conjunto total de datos.
 
-<img src="img/matriz_nasnet.jpg" alt="nasnet_matrix"/>
+<img src="img/matriz_nasnet.jpeg" alt="nasnet_matrix"/>
 
 ##### Conclusiones
 
@@ -423,7 +423,7 @@ Los tiempos indicados son los obtenidos con la GPU NVIDIA K80, con la máquina v
 
 En las siguientes gráficas podemos observar la evolución en las métricas de los modelos a los largo del proceso de entreno. En la primera vemos como el ***accuracy*** de las redes *NasNet* e *InceptionResNetV2 con ImageNet* son los que tienen una mejor evolución. La red neuronal simple y la convolucional las siguen con unos números bastante inferiores y parándose al no mejorar. Me resulta curioso el comportamiento estático de *DenseNet*, habría que revisar si este proceso ha sido llevado a cabo correctamente. Y por último la red *VGG16* que es la que presenta peores resultados con diferencia.
 
-<img src="img/accuracy.jpg" alt="accuracy"/>
+<img src="img/accuracy.jpeg" alt="accuracy"/>
 
 
 ### Fine Tuning<a name="id10"></a>
