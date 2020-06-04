@@ -97,7 +97,8 @@ Podemos observar por ejemplo que disponemos de más de 800 cuadros de Van Gogh, 
 
 * Empezaremos probando con una selección de artistas que tengan el número de obras más balanceadas. Primero con una selección de los 5 pintores con más registros para luego ir ampliando.
 
-<img src="img/countplot5.jpeg" alt="countplot5"/> <img src="img/countplot10.jpeg" alt="countplot10"/>
+<img src="img/countplot5.jpeg" alt="countplot5"/>
+<img src="img/countplot10.jpeg" alt="countplot10"/>
 
 ### Separar *train*,*test* y *validation*
 
@@ -124,6 +125,11 @@ Ahora estableceremos los parámetros para la creación de nuevas imagenes a part
 * **fill_mode**: Cuando a la imagen se le aplica una rotación cambia su aspecto, para mantener el mismo aspecto se tienen que rellenar los pixeles faltantes, con la opción nearest los pixeles cercanos se repiten para rellenar las areas faltantes.
 
 <img src="img/dataaugmentation.jpeg" alt="full"/>
+<<<<<<< HEAD
+<img src="img/dataaugmentation1.jpeg" alt="ej1"/>
+<img src="img/dataaugmentation2.jpeg" alt="ej2"/>
+=======
+>>>>>>> 76a3453303841d5e3e5ad2fb93766d33a27c406a
 
 ### Elegir el modelo<a name="id9"></a>
 
@@ -362,25 +368,70 @@ Necesitamos usar una capa <code>GlobalAveragePooling2D</code> para adaptar la sa
 A la función de creación de la red deberemos pasarle el parámetro <code>layers</code> que determina las capas del modelo a congelar. Tendremos que hacer varias pruebas hasta encontrar un numero de capas a congelar adecuado. 
 
 ##### Entrenar el modelo
+
+El entreno se ha realizado en 52 *epochs* de 5 segundo. Un tiempo total de menos de **5 minutos**. El resultado de *accuracy* en relación al conjunto de validación es del 74%.
+
 ##### Evaluación del modelo
+
+En el primer gráfico se presenta la *ccuracy* obtenida en cada *epoch*, tanto para los datos de entrenamiento como los de test. En el segundo gráfico vemos la evolución en cada epoch de la *loss* para los dos conjuntos de datos. Obtenemos los mejores resultados hasta el momento.
+
+<img src="img/imagenet_graf.png" alt="imagenet_graf"/>
+
 ##### Predicción del modelo
 ##### Conclusiones
 
 #### NasNET<a name="id348"></a>
 
+Alrededor de noviembre de 2017 el proyecto AutoML de Google  creo NASNet, un sistema optimizado para ImageNet superando a este. Fue entrenada para la identificación y reconocimiento de imágenes con más de 60.000 imágenes y 1000 categorías diferentes. Tiene un tamaño de entrada por defecto de 224 por 224. Por lo que he podido leer puede dar una baja *accuracy* en datasets grandes.
+
+<img src="img/nasnet_esquema.png" alt="nasnet"/>
+
 ##### Crear la red
+
+Para crear esta red disponemos de varios parámetros de entrada:
+*  <code>input_shape</code>: al que le pasaremos el tamaño de nuestras imágenes.
+*  <code>include_top</code>: incluye una capa conectada en la parte superior.
+*  <code>weights</code>: puede ser <code>None</code> o utilizar los pesos de *ImageNet*.
+*  <code>input_tensor</code>: tensor opcional de Keras.
+*  <code>pooling</code>: Hace que el *output* del modelo sea un tensor 4D en la última capa convolucional.
+*  <code>classes</code>: número de clases a identificar.
+
 ##### Entrenar el modelo
+
+Al entrenar el modelo vemos que este se ha parado en el *epoch* 37. A 16 segundos por *epoch* el tiempo de espera ha sido de algo menos de **10 minutos**. El resultado de *accuracy* con respecto a la muestra de validación es del 71%.
+
 ##### Evaluación del modelo
+
+La función de pérdida y el error medio cuadrático presentan buenas cifras y estás van descendiendo a lo largo del entreno. La *accuracy* también mejora hasta el *epoch* 30 que se estanca en el conjunto de validación.
+
+<img src="img/nasnet_graf.jpg" alt="nasnet_graf"/>
+
 ##### Predicción del modelo
+
+Podemos observar esa diagonal descendente en la matriz de confusión indicador de unos buenos resultados. En el <code>classification_report</code> vemos como *Auguste Renoir* y *Pablo Picasso* son los que peor clasifica, esto podría deberse a que tienen un menor soporte en el conjunto total de datos.
+
+<img src="img/matriz_nasnet.jpg" alt="nasnet_matrix"/>
+
 ##### Conclusiones
+
+La red *NasNET* tiene buenos resultados, pero obtiene un *accuracy* más bajo en un tiempo de ejecución más alto que *InceptionResNetV2*
+
+#### Comparativa de modelos y conclusiones generales
+
+Hemos visto como se comportan diversas redes, las dos primeras creadas desde 0, frente al uso de diferentes arquitecturas ya creadas, así como de pesos ya entrenados. 
+
+He identificado que un mayor número de parámetros no significa unos mejores resultados. Esto se ve claramente en el caso de los *VGG16* y la red neuronal simple, la primera con más de 50 millones de parámetros y un *accuracy* del 33% frente a los 3 millones de parámetros y 55% de aciertos.
+
+Los tiempos indicados son los obtenidos con la GPU NVIDIA K80, con la máquina virtual de 60 GB de memoria los modelos con más parámetros llegaron a tardarme 12 horas.
+
+En las siguientes gráficas podemos observar la evolución en las métricas de los modelos a los largo del proceso de entreno. En la primera vemos como el ***accuracy*** de las redes *NasNet* e *InceptionResNetV2 con ImageNet* son los que tienen una mejor evolución. La red neuronal simple y la convolucional las siguen con unos números bastante inferiores y parándose al no mejorar. Me resulta curioso el comportamiento estático de *DenseNet*, habría que revisar si este proceso ha sido llevado a cabo correctamente. Y por último la red *VGG16* que es la que presenta peores resultados con diferencia.
+
+<img src="img/accuracy.jpg" alt="accuracy"/>
 
 
 ### Fine Tuning<a name="id10"></a>
 
-### Sistema de recomendación(EXTRA)<a name="id11"></a>
 
-<hr style="color: #7acaff;" width="50%" />
-<a name="results"></a>
 
 ## Results<a name="id4"></a>
 
