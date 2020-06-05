@@ -442,7 +442,7 @@ Aumentando a (300,300) el tamaño de la imagen y manteniendo el mismo número de
 Con una calidad de (300, 300) px y congelando 600 capas en el conjunto total del *dataset* se obtiene un **79%**.
 
 <img src="img/matriz50.jpeg" alt="matriz50"/>
-<img src="img/summary.jpeg" alt="results0"/>
+<img src="img/sumary.jpeg" alt="results0"/>
 
 
 ## Conclusiones y próximos pasos<a name="#id111"></a>
