@@ -23,14 +23,14 @@ Mar Lizana Atienza
 
 ## Project Description<a name="id1"></a>
 
-Mediante la aplicación de técnicas de deep-learning entrenaré un algoritmo capaz de identificar los autores de obras de arte. Los motivos principales de la selección de este tema era poder trabajar con imágenes y redes neuronales.
+Mediante la aplicación de técnicas de deep-learning he entrenado un algoritmo capaz de identificar autores de obras de arte. El principal motivo para la elección del tema es que permite trabajar con imágenes y redes neuronales.
 
 <hr style="color: #7acaff;" width="50%" />
 <a name="dataset"></a>
 
 ## Dataset<a name="id2"></a>
 
-Hemos seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www.kaggle.com/ikarus777/best-artworks-of-all-time">los 50 artistas más influyentes</a> de la historia del arte. Se trata de una colección de imágenes de las obras de arte y un conjunto de datos con información básica recuperada de wikipedia en formato CSV. 
+He seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www.kaggle.com/ikarus777/best-artworks-of-all-time">los 50 artistas más influyentes</a> de la historia del arte. Se trata de una colección de imágenes de las obras e información recuperada de wikipedia en formato CSV. 
 
 * **artists.csv**:
 
@@ -48,7 +48,7 @@ Hemos seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www
 
 <CODE>wikipedia</CODE> : URL a la entrada de Wikipedia.
 
-<CODE>paintings</CODE> : número total de pinturas adjuntadas.
+<CODE>paintings</CODE> : Número total de pinturas adjuntadas.
     
 
 * **images.zip**:
@@ -56,7 +56,7 @@ Hemos seleccionado un dataset de la plataforma Kaggle sobre <a href="https://www
     
     
 * **resized.zip**:
-    Subset con imágenes de menor calidad para que los modelos vayan mejor.
+    Subset con imágenes de menor calidad para facilitar el funcionamiento de los modelos.
 
 <hr style="color: #7acaff;" width="50%" />
 <a name="workflow"></a>
@@ -75,53 +75,53 @@ El recorrido del proyecto es el siguiente:
 
 ### Análisis del proyecto<a name="id6"></a>
 
-Nos encontramos frente a un problema que necesita de un algoritmo de aprendizaje supervisado.El trabajar con datos que requieren una capacidad computacional superior a mi ordenador requería de los servicios que ofrece Google en la nube. Cree dos máquinas virtuales, la primera con 30 GB de memoria y una GPU NVIDIA K80 y una segunda con 60 GB de memoria.
+Este trabajo requiere un algoritmo de aprendizaje supervisado. La capacidad computacional necesaria para procesar todos los datos es superior a la de mi ordenador personal, por lo que he hecho uso los servicios que ofrece Google en la nube. Creé dos máquinas virtuales, la primera con 30 GB de memoria y una GPU NVIDIA K80, y la segunda con 60 GB de memoria.
 
 ### EDA<a name="id7"></a>
 
-Para el **análisis exploratorios de los datos** empecé trabajando con el csv. generé un grafo que me permitiera ver las relaciones entre los pintores através de los movimientos artísticos.
+Para el **análisis exploratorio de los datos** empecé trabajando con el csv. Generé un grafo que me permitiese ver las relaciones entre pintores a través de los movimientos artísticos.
 
 <img src="img/grafo.png" alt="Grafo"/>
 
-Generé una primera visualización de las imágenes. Aplicando la función <code>open_images_names</code> obtendremos las imágenes a analizar junto a una lista con los nombres que se extraen del archivo, y solo habrá que pasarle la dirección del directorio donde están nuestras imagenes junto con <k>/**</k> para que extraiga todos los archivos que hay dentro.
+Esta es una primera visualización de las imágenes. Con la función <code>open_images_names</code> se obtienen las imágenes a analizar junto a una lista de los nombres que se extraen del archivo. Para extraer los archivos solo habrá que indicar el directorio donde están nuestras imágenes junto con <k>/**</k>.
 
 <img src="img/random_pictures.png" alt="Random"/>
 
-Con la función <code>muestra</code> podemos ver una imagen al azar de nuestra colección junto al nombre del artista y el tamaño. Cada vez que se ejecute saldrá una diferente.
+La función <code>muestra</code> permite ver una imagen al azar de nuestra colección junto al nombre del artista y el tamaño. Cada vez que se ejecute saldrá una diferente.
 
 <img src="img/ejemplo2.jpeg" alt="ejemplo_muestra"/>
 
-Podemos observar por ejemplo que disponemos de más de 800 cuadros de Van Gogh, frente a unos 50 de Cezanne. Hay diferentes estrategias que podemos seguir para corregir este problema:
+Enseguida se observa un problema de desbalanceo. Por ejemplo, disponemos de más de 800 cuadros de Van Gogh, frente a unos 50 de Cezanne. Hay diferentes formas de corregir esto.
 
 <img src="img/countplot50.jpeg" alt="countplot50"/>
 
-* Empezaremos probando con una selección de artistas que tengan el número de obras más balanceadas. Primero con una selección de los 5 pintores con más registros para luego ir ampliando.
+* Empezaremos con una selección de artistas con número de obras más cercano entre sí, partiendo de los 5 pintores con más registros para luego ir ampliando.
 
 <img src="img/countplot5.jpeg" alt="countplot5"/><img src="img/countplot10.jpeg" alt="countplot10"/>
 
 ### Separar *train*,*test* y *validation*
 
-Generamos nuestra *X* y nuestra *y* desde la selección realizada en el paso anterior, almacenamos el número total de elementos de nuestra variable dependiente, aplicamos la función <code>LabelEncoder()</code> para codificar las etiquetas, creo un diccionario al que después recurrir para las visualizaciones y una lista solo con las etiquetas.Procedemos a separar el conjunto de entreno, test y validación y creamos una secuencia de 0 y 1 para nuestra variable dependiente.
+Ahora podemos generar nuestra *X* y nuestra *y* desde la selección realizada en el paso anterior, paa a continuación almacenar el número total de elementos de la variable dependiente, aplicar la función <code>LabelEncoder()</code> para codificar las etiquetas, y crear un diccionario al que después recurrir para las visualizaciones, así como una lista con las etiquetas. A partir de aquí se puede separar el conjunto de entreno, test y validación y crear una secuencia de 0 y 1 para la variable dependiente.
 
 ### Data Wrangling<a name="id8"></a>
 
 #### Ajustar el tamaño de las imágenes
 
-Las imágenes que forman nuestra colección tienen diferentes tamaños; deberemos establecer un tamaño común para poder entrenar nuestro algoritmo. En este caso, limitaremos el tamaño a una dimensión de 100px para que los modelos puedan ejecutarse más rápido. Usaremos la función creada <code>resize_data</code> para ello.
+Las imágenes que forman la colección tienen diferentes tamaños; habrá que establecer un tamaño común para poder entrenar el algoritmo. En este caso, limitando el tamaño a una dimensión de 100px para que los modelos puedan ejecutarse más rápido, mediante la función <code>resize_data</code>.
 
 <img src="img/standar100.jpeg" alt="standar100"/>
 
-Claramente la imagen a perdido bastante calidad, veamos como reaccionan los modelos.
+Claramente la imagen ha perdido bastante calidad. Veamos cómo reaccionan los modelos.
 
 #### DataAugmentation
 
-Ahora estableceremos los parámetros para la creación de nuevas imagenes a partir de modificaciones de la original. Estas variaciones permiten aprovechar cada parte de la imagen para encontrar los patrones, lo cual es muy útil cuando tenemos pocas imágenes y para que el modelo generalice mejor. Podemos realizar las siguientes modificaciones:
-* **rotation_range**: Indica el numero maximo de grados que la imagen se puede inclinar.
-* **width shift range, height shift range**: cambia de orientación los pixeles de algunas partes de la imagen.
-* **shear_range**: Modifica algunas partes de la imagen modificando la orientación.
+Ahora se pueden establecer parámetros para la creación de nuevas imágenes a partir de modificaciones de la original. Estas variaciones permiten aprovechar cada parte de la imagen para encontrar patrones, lo cual es muy útil cuando hay pocas imágenes y hará que el modelo generalice mejor.
+* **rotation_range**: Número máximo de grados que la imagen se puede inclinar.
+* **width shift range, height shift range**: Cambia de orientación los píxeles de algunas partes de la imagen.
+* **shear_range**: Modifica algunas partes de la imagen manipulando la orientación.
 * **zoom_range**: Aplica un acercamiento a la imagen.
 * **horizontal_flip**: Cambia la orientación de la imagen.
-* **fill_mode**: Cuando a la imagen se le aplica una rotación cambia su aspecto, para mantener el mismo aspecto se tienen que rellenar los pixeles faltantes, con la opción nearest los pixeles cercanos se repiten para rellenar las areas faltantes.
+* **fill_mode**: Los píxeles cercanos se repiten para rellenar las áreas que una rotación haya podido dejar vacías.
 
 <img src="img/dataaugmentation.jpeg" alt="full"/>
 
@@ -148,98 +148,98 @@ Las redes neuronales son un modelo para encontrar esa combinación de parámetro
 
 <img src="img/red ejemplo.png" width="400" height="400"/>
 
-Antes de comenzar a probar modelos determinaremos nuestros objetivos en los resultados. Para ello definimos las métricas que nos indicarán si nuestro modelo está haciendo bien el trabajo, empezando por los indicadores:
+Antes de comenzar a probar modelos habrá que determinar objetivos en los resultados. Para ello son útiles las métricas que indicarán si el modelo está haciendo bien el trabajo, empezando por los indicadores:
 
 
 **Métricas de evaluación del modelo**:
 
-* **loss**: Compara y mide cuan bueno/malo fue el resultado de la predicción en relación con el resultado correcto. Cuanto más proximo a 0 sea, mejor, queremos que la divergencia entre el valor estima y el esperado sea lo más pequeña posible.
+* **loss**: Compara el resultado predicho con el resultado correcto. Cuanto más próximo a 0 mejor, ya que se busca la menor divergencia posible.
 
-* **mse**: El *error cuadrático medio* (median standard error)es una función de coste. Se pueden utilizar métodos estadísticos formales para determinar la confianza del modelo entrenado. 
+* **mse**: El *error cuadrático medio* (median standard error) es una función de coste. Se pueden utilizar métodos estadísticos formales para determinar la confianza del modelo entrenado. 
 
-* **learning rate**: El valor adecuado de este hiperparámetro depende del problema en cuestión, suele denominarse también *step size*. En general, una buena regla es que si nuestro modelo de aprendizaje no funciona, disminuyamos la learning rate. Si sabemos que el gradiente de la función de loss es pequeño, entonces es seguro probar con learning rate que compensen el gradiente.
+* **learning rate**: El valor adecuado de este hiperparámetro depende del problema en cuestión. En general, si el modelo de aprendizaje no funciona, es buena idea reducir la learning rate. Si el gradiente de la función de loss es pequeño, se pueden probar learning rate que compensen el gradiente.
 
-* **acurracy**: La exactitud mide el porcentaje de casos en los que el modelo ha acertado y no distingue entre tipos de errores. Es una medida que se debe interpretar con cuidado, ya que puede dar buenos resultados sin un buen modelo cuando las clases están desbalanceadas. En nuestro caso será una de las métricas que usemos dado que no es relevante si tenemos falsos negativos ni falsos positivos.
+* **acurracy**: Porcentaje de casos en que el modelo ha acertado. No distingue entre tipos de errores. Debe interpretarse con cuidado, ya que un mal modelo puede dar buenos resultados cuando las clases están desbalanceadas. En este proyecto será muy útil dado que no son relevantes los falsos negativos ni los falsos positivos.
 
-* **precision**: La precisión mide la **calidad** del modelo. Es el resultado de dividir los verdaderos positivos entre la suma de los verdaderos positivos y los falsos positivos.
+* **precision**: Mide la **calidad** del modelo. Es el resultado de dividir verdaderos positivos entre la suma de verdaderos positivos y falsos positivos.
 
-* **recall**: La exhaustividad nos aporta información sobre la **cantidad** de elementos que es capaz de identificar. Es el número de resultante de dividir los verdaderos positivos entre la suma de los verdaderos positivos y los falsos negativos.
-* **f1**: El Valor-F combina las medidas de precisión y recall en un solo valor, siendo el resultado de multiplicar por dos el producto de la precision y el recall entre la suma de los mismos.
+* **recall**: Aporta información sobre la **cantidad** de elementos que es capaz de identificar. Es el resultado de dividir verdaderos positivos entre la suma de verdaderos positivos y falsos negativos.
+* **f1**: El Valor-F combina precision y recall en un solo valor, siendo el resultado de multiplicar por dos el producto de la precision y el recall entre la suma de los mismos.
 
 
 #### Hiperparámetros<a name="id342"></a>
 
 Los *hiperparámetros* se utilizan para describir la configuración del modelo. No se utilizan para modelar los datos directamente, pero influyen en la capacidad y características de aprendizaje del modelo. 
 
-Las funciones <code>callback</code> son aquellas que se pasan a otra función como argumento y se ejecutan dentro de esta. Aplicaremos las siguientes:
+Las funciones <code>callback</code> son aquellas que se pasan a otra función como argumento y se ejecutan dentro de esta. En este proyecto se aplicarán las siguientes:
 
-* **EarlyStopping**: Para cuando la función de coste no mejore en un número dado de epochs. Nos ayudará reduciendo el **overfitting**. Para ello marcaremos <code>verbose</code> en 1, para saber el epoch en el que el modelo se ha parado. Con <code>patience</code> le indicamos cuantos epochs tienen que pasar para que el entrenamiento pare y con <code>min_delta</code> establecemos un incremento específico de la mejora para el error cuadrático.
+* **EarlyStopping**: Para cuando la función de coste no mejore en un número dado de epochs. Ayudará reduciendo el **overfitting**. Para ello se marca <code>verbose</code> en 1, para saber el epoch en el que el modelo se ha parado. Con <code>patience</code> se indicará cuántos epochs tienen que pasar para que el entrenamiento pare y con <code>min_delta</code> se establece un incremento específico de mejora para el error cuadrático.
 
 
-* **ReduceLROnPlateau**: Si el entrenamiento no mejora tras unos epochs específicos, reduce el valor de learning rate del modelo, lo que normalmente supone una mejora del entrenamiento. Ahora bien, el mejor learning rate  en general es aquel que disminuye a medida que el modelo se acerca a una solución.
+* **ReduceLROnPlateau**: Si el entrenamiento no mejora tras unos epochs específicos, reduce el valor de learning rate del modelo, lo que normalmente supone una mejora del entrenamiento. Ahora bien, el mejor learning rate suele ser aquel que disminuye a medida que el modelo se acerca a una solución.
 
-* **Batch**: Con el *bach* definimos el número de muestras para trabajar antes de actualizar los paramétros internos del modelo. Las predicciones se comparan con las variables de salidad esperadas y se calcula el error. A partir de este error el algoritmo se actualiza para mejorarse.
+* **Batch**: Define el número de muestras para trabajar antes de actualizar los paramétros internos del modelo. Las predicciones se comparan con las variables de salidad esperadas y se calcula el error. A partir de este error el algoritmo se actualiza para mejorarse.
 
     * **Batch Gradient Descent**. Cuando el tamaño del bach es igual que el del conjunto de entrenamiento.
     * **Stochastic Gradient Descent**. Cuando el tamaño del bach es igual a 1.
-    * **Mini-Batch Gradient Descent**. Cuando el tamaño del bach está entre uno y el tamaño del conjunto de entrenamient, los más frecuentes en tutoriales son de  32, 64 y 128.
+    * **Mini-Batch Gradient Descent**. Cuando el tamaño del bach está entre uno y el tamaño del conjunto de entrenamiento.
     
     
 * **Epoch**: Se trata de un hiperparámetro que define el número de veces que el algoritmo de aprendizaje funcionará sobre el conjunto de datos de entrenamiento. Cada muestra del conjunto de datos de entrenamiento tiene la "oportunidad" de actualizar los parámetros internos del modelo. Puede estar compuesto por uno o más *batches*. El número de *epochs* suele ser grande, lo que permite que el algoritmo se ejecute hasta que el error del modelo se minimice lo suficiente.
 
-Llegado el momento de compilar nuestro modelo usaremos las función <code>.compile()</code> con los siguientes parámetros:
+Llegado el momento de compilar nuestro modelo usaremos la función <code>.compile()</code> con los siguientes parámetros:
 
-* Una **función de *loss*** es uno de los parámetros requeridos para cuantificar lo cercano que está una determinada red neuronal de su ideal mientras está en el proceso de entrenamiento. Definimos nuestra función de pérdida en <code>loss</code> entre las opciones:
+* Una **función de *loss*** es un parámetro requerido para cuantificar lo cerca que está una red neuronal de su ideal durante el proceso de entrenamiento. Definimos nuestra función de pérdida en <code>loss</code> entre las opciones:
     * <code>'categorical_crossentropy'</code> : Calcula la pérdida de crossentropy entre los artistas y las predicciones. Se usa cuando hay dos o más etiquetas. Necesita de una representación <code>OneHotEncoding</code>.
     * <code>'sparse_categorical_crossentropy'</code> : Calcula la pérdida de crossentropy entre los artistas y las predicciones. Se usa cuando hay dos o más etiquetas. Necesita de una representación <code>LabelEncoder</code>.
 
-* El **optimizador** es otro de los argumentos que se requieren en el método de compile(). De forma general, podemos ver el proceso de aprendizaje como un problema de optimización global donde los parámetros (los pesos y los sesgos) se deben ajustar de tal manera que la función de *loss* presentada anteriormente se minimice. Para nuestro <code>optimizer</code> usaremos:
-    * <code>'Adam'</code>: implementa el algoritmo Adam. Se trata de un método de descenso de gradiente estocástico que se basa en la estimación adaptativa. Se trara de un método computacionalmente eficiente, con pocos requisitos de memoria y adecuado para problemas con grandes cantidades de datos/parámetros.
+* El **optimizador** es otro argumentos requerido en el método de compile(). El proceso de aprendizaje es un problema de optimización global donde los parámetros (pesos y sesgos) se deben ajustar de manera que la función de *loss* se minimice. Para el <code>optimizer</code> se usará:
+    * <code>'Adam'</code>: implementa el algoritmo Adam. Se trata de un método de descenso de gradiente estocástico basado en la estimación adaptativa. Es computacionalmente eficiente, con pocos requisitos de memoria y adecuado para problemas con grandes cantidades de datos/parámetros.
 
-En cuanto a nuestras métricas, en <code>metrics</code> nos centraremos, como hemos comentado más arriba, en el accuracy y el error cuadrático.
+En cuanto a métricas, en <code>metrics</code> utilizaremos accuracy y error cuadrático.
 
 
 #### Red Neuronal Simple<a name="id343"></a>
 
-Una red neuronal es un grupo interconectado de nodos de forma similar a las neuronas de un cerebro. Una red neuronal simple se caracteriza por tener un número de entradas y un número de salidas. Cada entrada tendrá un peso e influirá en la salida de la neurona.
+Una red neuronal es un grupo de nodos interconectado de forma similar a las neuronas de un cerebro. Una red neuronal simple se caracteriza por tener un número de entradas y un número de salidas. Cada entrada tendrá un peso e influirá en la salida de la neurona.
 
 <img src="img/rnn_esquema.jpg"/>
 
-##### Creamos la red
+##### Creando la red
 
-Empezaremos definiendo una red neuronal simple y junto con ella, algunos conceptos que se irán repitiendo a medida que vayamos viendo diferentes modelos:
+Empecemos definiendo una red neuronal simple y algunos conceptos que se irán repitiendo a medida que aparezcan diferentes modelos:
 * **Sequential()**: Agrupa de forma lineal las capas del modelo proporcionando características de capacitación e inferencia al modelo.
 * **Flatten**: Convierte la matriz de entrada en un array de 1 dimensión (plano).
 * **Dense**: Añade una capa oculta a la red neuronal.
 
-* **Función de activación ReLu**: Transforma los valores introducidos anulando los valores negativos y dejando los positivos tal y como entran. La ventaja de usar la función ReLU radica en que tiene un comportamiento lineal para entradas positivas, lo que evita precisamente este "estancamiento" durante el entrenamiento. Se activa un solo nodo si la entrada está por encima de cierto umbral.
+* **Función de activación ReLu**: Anula los valores negativos y deja los positivos tal y como entran. Su ventaja radica en que tiene un comportamiento lineal para entradas positivas, lo que evita el "estancamiento" durante el entrenamiento. Se activa un solo nodo si la entrada está por encima de cierto umbral.
 
-* **Función de salida SoftMax**: Ha resultado dar buenos resultados cuando el entrenamiento es multietiqueta pero no multiclase, tenemos muchos artistas diferentes pero todos son pintores. Asigna probabilidades decimales a cada clase en un caso de clases múltiples de manera que terminen sumando 1. Esta restricción adicional permite que el entrenamiento converja más rápido.
+* **Función de salida SoftMax**: Da buenos resultados cuando el entrenamiento es multietiqueta pero no multiclase (hay muchos artistas diferentes pero todos son pintores). Asigna probabilidades decimales a cada clase en un caso de clases múltiples, de manera que terminen sumando 1. Esta restricción adicional permite que el entrenamiento converja más rápido.
 
-Compilamos el modelo creado y le pasamos los parámetros para la función de pérdida, el optimizador y las métricas a tener en cuenta.
-Con <code>.summary()</code> podemos ver un resumen de nuestra red neuronal. Esta red calculo algo más de **3 millones** de parámetros.
+Llegado este punto, se compila el modelo creado y se le pasan los parámetros para la función de pérdida, el optimizador y las métricas a tener en cuenta.
+Con <code>.summary()</code> se puede ver un resumen de la red neuronal. Esta red calculó algo más de **3 millones** de parámetros.
 
 ##### Entrenar el modelo
 
-Ahora ya solo queda entrenarla, para lo cual le indicamos nuestras imágenes, los pintores y los parámetros que hemos establecido antes. Usaremos la función <code>.fit_generator()</code> en lugar de <code>.fit()</code> dado que nos permite llamar a las características que hemos establecido antes con <code>ImageDataGenerator</code> para aumentar el número de imágenes a analizar con pequeñas modificaciones.
+Ya solo queda entrenarla, para lo cual se le indican imágenes, pintores y parámetros establecidos previamente. Se usará la función <code>.fit_generator()</code> en lugar de <code>.fit()</code>, dado que permite llamar a las características que establecidas antes con <code>ImageDataGenerator</code> para aumentar el número de imágenes a analizar con pequeñas modificaciones.
 
 Este modelo ha necesitado 11 *epochs* de los 100 establecidos al principio, al no pararse por la función de <code>EarlyStopping</code>. Podríamos concluir que para llegar a los resultados óptimos deberíamos aumentar este valor. Cada uno ha tardado uno 4 segundos, lo que ha hecho que el modelo tarde algo menos de **1 minuto** en total.
 
 ##### Evaluación del modelo
 
-La función <code>.evaluate_generator()</code> nos permite las métricas *loss*, *accuracy* y *mse* que obtiene el modelo. Con estos primeros datos podemos ver como el coportamiento final de todos los parámetros es más que aceptable para una red neuronal simple. Tenemos un *loss* de 0,99, lo que indica un coste de computación alto, la *accuracy* no está mal tampoco, algo más de la mitad de los casos acierta y vemos que el *mse* también es una cifrá relativamente baja.Estas métricas comparan el conjunto de test con el de valiación, habrá que ver las métricas definitivas cuando las comparemos con el conjunto de test.
+La función <code>.evaluate_generator()</code> muestra las métricas *loss*, *accuracy* y *mse* que obtiene el modelo. Con estos primeros datos podemos ver cómo el comportamiento final de todos los parámetros es más que aceptable para una red neuronal simple. El *loss* es de 0.99, lo que indica un coste de computación alto; la *accuracy* es también aceptable, con algo más de la mitad de los casos acertados, y el *mse* es una cifrá relativamente baja. Estas métricas comparan el conjunto de test con el de validación, habrá que ver las métricas definitivas cuando las comparemos con el conjunto de test.
 
-Con la función creada <code>plot_train_vs_test()</code> podemos ver el comportamiento de las métricas a lo largo de los *epochs*. Podemos observar en la gráfica de *accuracy* como el modelo parece que tiene una tendencia a seguir aumentando este parámetro con un mayor número de *epochs*. Mientras que en el gráfico de la función de pérdida vemos como el valor desciende muy rápido al principio para estancarse a partir de los 11 *epochs*.
+La función <code>plot_train_vs_test()</code> muestra el comportamiento de las métricas a lo largo de los *epochs*. Se puede observar en la gráfica de *accuracy* la aparente tendencia del modelo a seguir aumentando este parámetro a mayor número de *epochs*. En el gráfico de la función de pérdida vemos cómo el valor desciende rápidamente al principio para estancarse a partir de los 11 *epochs*.
 
 <img src="img/snn_evaluation.jpeg" alt="snn_evaluation"/>
 
 ##### Predicción del modelo
 
-Una vez entrenado el modelo procedemos a ver los resultados que obtenemos con el conjunto de datos de test. Para ello empezaremos observando la matriz de confusión donde se pueden apreciar las etiquetas reales, eje de las abscisas, frente a las predichas, eje de las ordenadas. Podemos observar que el comportamiento y la capacidad de predicción no es del todo mala.
+Una vez entrenado el modelo es posible consultar los resultados que obtenemos con el conjunto de datos de test. Una forma de hacerlo es mediante la matriz de confusión, donde se pueden apreciar las etiquetas reales (abscisas), frente a las predichas (ordenadas). El comportamiento y la capacidad de predicción son aceptables.
 
 <img src="img/matriz_snn.jpeg" alt="matriz_snn"/>
 
-Las etiquetas de *Vincent Van Gogh* y *Albrecht Dürer* son las que clasifica mejor, también son las que tienen un mayor número de observaciones. Acabamos obteniendo un 51% de *accuracy* al pasarle nuestro conjunto de test.
+Las etiquetas de *Vincent Van Gogh* y *Albrecht Dürer* son las mejor clasificadas, y las que tienen mayor número de observaciones. Se obtiene así un 51% de *accuracy* al pasarle el conjunto de test.
 
 Presenta problemas al identificar a *Renoir* como podemos ver en el <code>classification_report</code> y al pasarle la función <code>test_img</code>.
 
@@ -247,25 +247,25 @@ Presenta problemas al identificar a *Renoir* como podemos ver en el <code>classi
 
 ##### Conclusiones
 
-Para tratarse de una red neuronal simple ha dado mejores resultados de los esperados, veremos como se comportan el resto de redes para poder comparar y sacar mejores conclusiones en relación a los resultados obtenidos.
+Tratándose de una red neuronal simple podemos considerar que ha dado muy buenos resultados. A continuación analizaremos el comportamiento del resto de redes para comparar y sacar mejores conclusiones.
 
 #### Redes Convolucionales<a name="id344"></a>
 
-Las neuronas de las redes neuronales convolucionales corresponden a campos receptivos de las neuronas de la corteza visual de un cerebro biológico. Han demostrado ser buenas para reconocer objetos en una imagen dado que permiten aprovecharla por trozos. Contiene varias capas ocultas especializadas que detectan de forma jerarquica, primero lineas y se van especializando hasta poder reconocer formas concretas.
-Las **convoluciones** consisten en tomar grupos de píxeles próximos y operar entre ellos generando una pequeña matriz que se denomina *kernel*. Este *kernel* recorre la imagen generando nuevas matrices, que, a su vez, volverían a pasar por el proceso de convolución para finalmente obtener un mapa de detección de características.
+Las neuronas de las redes neuronales convolucionales corresponden a campos receptivos de las neuronas de la corteza visual de un cerebro biológico. Han demostrado ser buenas para reconocer objetos en una imagen dado que permiten aprovecharla por partes. Contienen varias capas ocultas especializadas que detectan de forma jerarquica, partiendo de líneas para especializarse hasta poder reconocer formas concretas.
+Las **convoluciones** consisten en tomar grupos de píxeles próximos y operar entre ellos generando una pequeña matriz o *kernel*. Este *kernel* recorre la imagen generando nuevas matrices, que, a su vez, vuelven a pasar por el proceso de convolución para finalmente obtener un mapa de detección de características.
 
 <img src="img/ej_rnc.png" alt="ej_rnc"/>
 
 ##### Crear la red
 
-En este caso veremos los siguientes conceptor nuevos:
+En este caso veremos los siguientes conceptos nuevos:
 
-* **Conv2D**: Introduce una red convolucional, esta realiza el proceso de mover el kernel por toda la imagen y multiplicar los valores que encuentra. Tenemos que indicarle como primer parámetro el número de kernels, después el tamaño de estos, el tamaño del input y el tipo de activación que queremos.
-* **MaxPooling2D**: Para esta capa pasamos un kernel, pero en vez de multiplicar la información, toma el valor más grande de la sección de la imagen haciendo uns sintetización de los kernels anteriores para que no crezca exponencialmente el número de neuronas necesarias en la próxima capa. Con <code>pool_size</code> le indicamos el tamaño del kernel que usará esta capa.
-* **Dropout**: Nos permite hacer redes con más capas.
+* **Conv2D**: Introduce una red convolucional, esta realiza el proceso de mover el kernel por toda la imagen y multiplicar los valores que encuentra. Habrá que indicarle como primer parámetro el número de kernels, después el tamaño de estos, el tamaño del input y el tipo de activación que queremos.
+* **MaxPooling2D**: Para esta capa se pasa un kernel, pero en vez de multiplicar la información, toma el valor más grande de la sección de la imagen haciendo una sintetización de los kernels anteriores, para que no crezca exponencialmente el número de neuronas necesarias en la próxima capa. Con <code>pool_size</code> se indica el tamaño del kernel que usará esta capa.
+* **Dropout**: Permite hacer redes con más capas.
 
-Seguiremos el mismo proceso y estructura que con el modelo anterior.
-Vemos como esta red neuronal propone entrenar más de **47 millones de parámetros** frente a los 3 millones de la red simple.
+Se seguirá el mismo proceso y estructura del modelo anterior.
+Esta red neuronal propone entrenar más de **47 millones de parámetros**, frente a los 3 millones de la red simple.
 
 ##### Entrenar el modelo
 
@@ -273,9 +273,9 @@ Este modelo ha necesitado **11 *epochs*** de los 100 establecidos al principio, 
 
 ##### Evaluación del modelo
 
-Con estos primeros datos podemos ver como el coportamiento final de todos los parámetros ha mejorado en relación al modelo anterior. Tenemos un *loss* de 1,26, lo que indica un coste alto, la *accuracy* mejora ligeramente empezando a ver se aceptable  y vemos que el *mse* también es una cifrá que ha mejorado. Como he comentado anteriormente, estas métricas sufriran modificaciones al usar el modelo con el conjunto de test.
+Con estos primeros datos ya es visible la mejora en el coportamiento final de todos los parámetros respecto al modelo anterior. El *loss* es de 1.26, lo que indica un coste alto, la *accuracy* mejora ligeramente empezando a verse aceptable. El *mse* también ha mejorado. Como se ha comentado anteriormente, estas métricas sufrirán modificaciones al usar el modelo con el conjunto de test.
 
-Podemos observar en la gráfica de *accuracy* como el modelo parece que tiene una tendencia a seguir aumentando este parámetro pero se para dado que la función de pérdida no mejora. 
+Podemos observar en la gráfica de *accuracy* cómo el modelo parece que tiene una tendencia a seguir aumentando este parámetro pero se para dado que la función de pérdida no mejora. 
 
 <img src="img/rnc_graf.jpeg" alt="ej_rnc"/>
 
@@ -291,54 +291,54 @@ La imagen de prueba no la clasifica bien, confunde a *Degas* con *Picasso*.
 
 ##### Conclusiones
 
-La arquitectura de la **red neuronal simple** nos está dando mejores resultados a nivel de *accuracy*, veamos como se comportan las redes preentrenadas con nuestro conjunto de imágenes.
+La arquitectura de la **red neuronal simple** da mejores resultados en cuanto a *accuracy*. Queda compararla con el comportamiento de las redes preentrenadas con nuestro conjunto de imágenes.
 
 #### VGG-16<a name="id345"></a>
 
-La red **VGG16** es una de las primeras redes neuronales profundas. Se trata de una **red convolucional preentrenada** con una arquitectura fácil de comprender y con 13 capas convolucionales y 3 densas, de ahí el nombre. Esta red fue entrenada para resolver un problema de clasificación de 1000 clases.
+La red **VGG16** es una de las primeras redes neuronales profundas. Se trata de una **red convolucional preentrenada** con una arquitectura fácil de comprender, con 13 capas convolucionales y 3 densas, de ahí el nombre. Esta red fue entrenada para resolver un problema de clasificación de 1000 clases.
 
 <img src="img/vgg_esquema.png" alt="vgg"/>
 
 ##### Crear la red
 
-Seguimos los mismos casos que con los modelos anteriores. Para este caso tendremos en cuenta los siguientes parámetros:
-* **include_top**: añade una red neuronal densa al final.
-* **weights**: no cargaremos ningún modelo concreto preentrenado previamente como si haremos más adelante.
-* **input_tensor**:no especificaremos ningún tensor de keras.
-* **input_shape**:define la dimensión de los datos de entrada.
-* **pooling**: no lo especificamos.
-* **classes**: le indicamos el número de clases.
+Se sigue la misma estructura que con los modelos anteriores. Para este caso se tendrán en cuenta los siguientes parámetros:
+* **include_top**: Añade una red neuronal densa al final.
+* **weights**: No se cargarán modelos concretos preentrenados previamente hasta más adelante.
+* **input_tensor**: No se especificará ningún tensor de keras.
+* **input_shape**: Define la dimensión de los datos de entrada.
+* **pooling**: No se especificará.
+* **classes**: Indica el número de clases.
 
-Tenemos más de **50 millones de parámetros** para entrenar. Frente a los 3 millones de nuestra red neuronal simple o los 47 de la red convolucional.
+Presenta más de **50 millones de parámetros** para entrenar, frente a los 3 millones de la red neuronal simple o los 47 de la red convolucional.
 
 ##### Entrenar el modelo
 
-En este caso nos encontramos con un tiempo de espera de **8/9 segundos** por *epoch*, con un total de 15 *epochs*, lo que hacen poco más de 2 minutos. La función <code>EarlyStopping</code> ha parado el entreno.
+En este caso el tiempo de espera es de **8/9 segundos** por *epoch*, con un total de 15 *epochs*, lo que hacen poco más de 2 minutos. La función <code>EarlyStopping</code> ha parado el entreno.
 
 ##### Evaluación del modelo
 
-Con las gráficas de evolución podemos observar como este modelo parece "no aprender" bien. El *accuracy* se comporta de forma errática y el *loss* parece ir bien encaminado en el primer *epoch* pero luego se mantiene con altibajos. Los resultados finales no acompañan.
+Con las gráficas de evolución se observa cómo este modelo parece no "aprender" bien. El *accuracy* se comporta de forma errática y el *loss* parece ir bien encaminado en el primer *epoch* pero luego se mantiene con altibajos. Los resultados finales no acompañan.
 
 <img src="img/vgg_graf.jpeg" alt="vgg_graf"/>
 
 
 ##### Predicción del modelo
 
-Al compararlo con nuestras imágenes de test vemos como, efectivamente, el modelo se ha comportado de forma errática. Obteniendo un 18% de *accuracy* una cifra bastante baja.
+Al compararlo con las imágenes de test vemos como, efectivamente, el modelo se comporta de forma errática, obteniendo un 18% de *accuracy*, una cifra bastante baja.
 
 <img src="img/matriz_vgg.jpeg" alt="vgg_matrix"/>
 
-La imagen aleatoria de nuestro conjunto de test no la clasifica bien.
+La imagen aleatoria del conjunto de test no la clasifica bien.
 
 <img src="img/vgg_test.jpeg" alt="vgg_test"/>
 
 ##### Conclusiones
 
-Como podemos observar usar una red preentrenada sin ajustar no da muy buenos resultados.
+Usar una red preentrenada sin ajustar no da muy buenos resultados.
 
 #### DenseNet121<a name="id346"></a>
 
-Una de las principales mejoras que prensenta **DenseNet** es que consiguó acortar las conexiones entre capas cercanas a la entrada y la salida, aumentando así la densidad de la red. Se trata de una red recursiva donde todas las capas están conectadas entre ellas y por lo tanto, cada capa utiliza los datos de las demás.
+Una de las principales mejoras que presenta **DenseNet** es que consiguó acortar las conexiones entre capas cercanas a la entrada y la salida, aumentando así la densidad de la red. Se trata de una red recursiva donde todas las capas están conectadas entre sí, y por tanto cada capa utiliza los datos de las demás.
 
 <img src="img/densenet_esquema.png" alt="vgg_test"/>
 
@@ -350,25 +350,25 @@ Una de las principales mejoras que prensenta **DenseNet** es que consiguó acort
 
 #### InceptionResNETV2 con ImageNet<a name="id347"></a>
 
-En este caso usaremos la red pre-entrenada *IncepcionResNetV2* con  *ImageNet*. Se trata de una red convolucional que se ha entrenado con más de un millón de imagenes de *ImageNet*. *ImageNet* es un proyecto que proporciona una gran base de datos de imágenes con sus correspondientes anotaciones indicando el contenido de las imágenes. 
+En este caso se usará la red pre-entrenada *IncepcionResNetV2* con *ImageNet*. Se trata de una red convolucional que se ha entrenado con más de un millón de imagenes de *ImageNet*. *ImageNet* es un proyecto que proporciona una gran base de datos de imágenes con sus correspondientes anotaciones indicando el contenido de las imágenes. 
 
 <img src="img/Inceptionresnetv2.png" alt="vgg_test"/>
 
 ##### Crear la red
 
-A destacar el parámetro <code>include_top=False</code>. Este parámetro le indica a la red que no debe incluir la última capa de la red, destinada a realizar la predicción final. Esta capa está preparada para realizar las predicciones de todas las clases de ImageNet. Como nosotros queremos predecir únicamente nuestras clases, sustituremos esta capa por una capa personalizada.
+A destacar el parámetro <code>include_top=False</code>. Este indica a la red que no debe incluir la última capa, destinada a realizar la predicción final. Esta capa está preparada para realizar las predicciones de todas las clases de ImageNet. Como se busca predecir únicamente las clases, esta capa se sustituirá por una personalizada.
 
-Necesitamos usar una capa <code>GlobalAveragePooling2D</code> para adaptar la salida de la capa anterior a la capa *softmax*.
+La capa <code>GlobalAveragePooling2D</code> adaptará la salida de la capa anterior a la capa *softmax*.
 
-A la función de creación de la red deberemos pasarle el parámetro <code>layers</code> que determina las capas del modelo a congelar. Tendremos que hacer varias pruebas hasta encontrar un numero de capas a congelar adecuado. 
+A la función de creación de la red debe pasársele primero el parámetro <code>layers</code> que determina las capas del modelo a congelar. Tendremos que hacer varias pruebas hasta encontrar un número de capas a congelar adecuado. 
 
 ##### Entrenar el modelo
 
-El entreno se ha realizado en 52 *epochs* de 5 segundo. Un tiempo total de menos de **5 minutos**. El resultado de *accuracy* en relación al conjunto de validación es del 74%.
+El entreno se ha realizado en 52 *epochs* de 5 segundos, con un tiempo total de menos de **5 minutos**. La *accuracy* en relación al conjunto de validación es del 74%.
 
 ##### Evaluación del modelo
 
-En el primer gráfico se presenta la *ccuracy* obtenida en cada *epoch*, tanto para los datos de entrenamiento como los de test. En el segundo gráfico vemos la evolución en cada epoch de la *loss* para los dos conjuntos de datos. Obtenemos los mejores resultados hasta el momento.
+En el primer gráfico se presenta la *accuracy* obtenida en cada *epoch*, tanto para los datos de entrenamiento como los de test. En el segundo gráfico vemos la evolución en cada epoch de la *loss* para los dos conjuntos de datos. Estos son los mejores resultados hasta el momento.
 
 <img src="img/imagenet_graf.jpeg" alt="imagenet_graf"/>
 
@@ -379,49 +379,49 @@ En el primer gráfico se presenta la *ccuracy* obtenida en cada *epoch*, tanto p
 
 #### NasNET<a name="id348"></a>
 
-Alrededor de noviembre de 2017 el proyecto AutoML de Google  creo NASNet, un sistema optimizado para ImageNet superando a este. Fue entrenada para la identificación y reconocimiento de imágenes con más de 60.000 imágenes y 1000 categorías diferentes. Tiene un tamaño de entrada por defecto de 224 por 224. Por lo que he podido leer puede dar una baja *accuracy* en datasets grandes.
+Alrededor de noviembre de 2017 el proyecto AutoML de Google creó NASNet, un sistema optimizado para ImageNet. Fue entrenada para la identificación y reconocimiento de imágenes con más de 60.000 imágenes y 1000 categorías diferentes. Tiene un tamaño de entrada por defecto de 224 por 224. Puede dar una baja *accuracy* en datasets grandes.
 
 <img src="img/nasnet_esquema.png" alt="nasnet"/>
 
 ##### Crear la red
 
 Para crear esta red disponemos de varios parámetros de entrada:
-*  <code>input_shape</code>: al que le pasaremos el tamaño de nuestras imágenes.
-*  <code>include_top</code>: incluye una capa conectada en la parte superior.
-*  <code>weights</code>: puede ser <code>None</code> o utilizar los pesos de *ImageNet*.
-*  <code>input_tensor</code>: tensor opcional de Keras.
+*  <code>input_shape</code>: Al que se pasará el tamaño de las imágenes.
+*  <code>include_top</code>: Incluye una capa conectada en la parte superior.
+*  <code>weights</code>: Puede ser <code>None</code> o utilizar los pesos de *ImageNet*.
+*  <code>input_tensor</code>: Tensor opcional de Keras.
 *  <code>pooling</code>: Hace que el *output* del modelo sea un tensor 4D en la última capa convolucional.
-*  <code>classes</code>: número de clases a identificar.
+*  <code>classes</code>: Número de clases a identificar.
 
 ##### Entrenar el modelo
 
-Al entrenar el modelo vemos que este se ha parado en el *epoch* 37. A 16 segundos por *epoch* el tiempo de espera ha sido de algo menos de **10 minutos**. El resultado de *accuracy* con respecto a la muestra de validación es del 71%.
+Al entrenar el modelo vemos que se ha detenido en el *epoch* 37. A 16 segundos por *epoch* el tiempo de espera ha sido de algo menos de **10 minutos**. El resultado de *accuracy* con respecto a la muestra de validación es del 71%.
 
 ##### Evaluación del modelo
 
-La función de pérdida y el error medio cuadrático presentan buenas cifras y estás van descendiendo a lo largo del entreno. La *accuracy* también mejora hasta el *epoch* 30 que se estanca en el conjunto de validación.
+La función de pérdida y el error medio cuadrático presentan buenas cifras, que van descendiendo a lo largo del entreno. La *accuracy* también mejora hasta el *epoch* 30, donde se estanca en el conjunto de validación.
 
 <img src="img/nasnet_graf.jpeg" alt="nasnet_graf"/>
 
 ##### Predicción del modelo
 
-Podemos observar esa diagonal descendente en la matriz de confusión indicador de unos buenos resultados. En el <code>classification_report</code> vemos como *Auguste Renoir* y *Pablo Picasso* son los que peor clasifica, esto podría deberse a que tienen un menor soporte en el conjunto total de datos.
+La diagonal descendente en la matriz de confusión indica buenos resultados. El <code>classification_report</code> muestra cómo *Auguste Renoir* y *Pablo Picasso* son los peor clasificados; podría deberse a un menor soporte en el conjunto total de datos.
 
 <img src="img/matriz_nasnet.jpeg" alt="nasnet_matrix"/>
 
 ##### Conclusiones
 
-La red *NasNET* tiene buenos resultados, pero obtiene un *accuracy* más bajo en un tiempo de ejecución más alto que *InceptionResNetV2*
+La red *NasNET* tiene buenos resultados, pero un *accuracy* más bajo en un tiempo de ejecución más alto que *InceptionResNetV2*.
 
 #### Comparativa de modelos y conclusiones generales
 
-Hemos visto como se comportan diversas redes, las dos primeras creadas desde 0, frente al uso de diferentes arquitecturas ya creadas, así como de pesos ya entrenados. 
+Se han analizado diversas redes, las dos primeras creadas desde 0, frente al uso de diferentes arquitecturas ya creadas, así como de pesos ya entrenados. 
 
-He identificado que un mayor número de parámetros no significa unos mejores resultados. Esto se ve claramente en el caso de los *VGG16* y la red neuronal simple, la primera con más de 50 millones de parámetros y un *accuracy* del 33% frente a los 3 millones de parámetros y 55% de aciertos.
+Se ha demostrado que un mayor número de parámetros no implica mejores resultados. Esto se ve claramente en el caso de los *VGG16* y la red neuronal simple, la primera con más de 50 millones de parámetros y un *accuracy* del 33% frente a los 3 millones de parámetros y 55% de aciertos.
 
-Los tiempos indicados son los obtenidos con la GPU NVIDIA K80, con la máquina virtual de 60 GB de memoria los modelos con más parámetros llegaron a tardarme 12 horas.
+Los tiempos indicados son los obtenidos con la GPU NVIDIA K80, con la máquina virtual de 60 GB de memoria los modelos con más parámetros llegaron a tardar 12 horas.
 
-En las siguientes gráficas podemos observar la evolución en las métricas de los modelos a los largo del proceso de entreno. En la primera vemos como el ***accuracy*** de las redes *NasNet* e *InceptionResNetV2 con ImageNet* son los que tienen una mejor evolución. La red neuronal simple y la convolucional las siguen con unos números bastante inferiores y parándose al no mejorar. Me resulta curioso el comportamiento estático de *DenseNet*, habría que revisar si este proceso ha sido llevado a cabo correctamente. Y por último la red *VGG16* que es la que presenta peores resultados con diferencia.
+En las siguientes gráficas se puede observar la evolución de las métricas de los modelos a lo largo del proceso de entreno. En la primera vemos como el ***accuracy*** de las redes *NasNet* e *InceptionResNetV2* con *ImageNet* son los que presentan una mejor evolución. La red neuronal simple y la convolucional las siguen con unos números bastante inferiores y parándose al no mejorar. Resulta llamativo el comportamiento estático de *DenseNet*, habría que revisar si este proceso ha sido llevado a cabo correctamente. Por último, la red *VGG16* es la que presenta peores resultados con diferencia.
 
 <img src="img/accuracy.jpeg" alt="accuracy"/>
 
@@ -439,11 +439,11 @@ En las siguientes gráficas podemos observar la evolución en las métricas de l
 
 ## Bibliografía<a name="id5"></a>
 
-* Evans, O. (2019). Sensory Optimization: Neural Networks as a Model for Understanding and Creating Art. Recuperado de https://owainevans.github.io/visual_aesthetics/sensory-optimization.html
+* Evans, O. (2019). Sensory Optimization: Neural Networks as a Model for Understanding and Creating Art. https://owainevans.github.io/visual_aesthetics/sensory-optimization.html
 
-* Utrera Brugal, Jesús (2019). Tratamiento de imágenes usando ImageDataGenerator en Keras. Recuperado de https://enmilocalfunciona.io/author/jesus/
+* Utrera Brugal, Jesús (2019). Tratamiento de imágenes usando ImageDataGenerator en Keras. https://enmilocalfunciona.io/author/jesus/
 
-* Lerch, Daniel (2018). Fine-tuning en reconocimiento de imágenes mediante Deep Learning. Recuperado de https://medium.com/neuron4/fine-tuning-en-reconocimiento-de-im%C3%A1genes-mediante-deep-learning-c656ae728d73
+* Lerch, Daniel (2018). Fine-tuning en reconocimiento de imágenes mediante Deep Learning. https://medium.com/neuron4/fine-tuning-en-reconocimiento-de-im%C3%A1genes-mediante-deep-learning-c656ae728d73
 
 <img src="https://www.sketch.ca/sketchPub/uploads/2019/03/radical-art-of-young-people-2000x940.jpg" alt="ART" width="1000" height="50" align="center"/>
 
