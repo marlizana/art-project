@@ -8,20 +8,20 @@ Mar Lizana Atienza
 *Data Part Time Barcelona Dic 2019*
 
 
-## Content
+## Contenido
 
 **Índice**   
-1. [Project Description](#id1)
+1. [Descripción del proyecto](#id1)
 2. [Dataset](#id2)
 3. [Workflow](#id3)
-4. [Results](#id4)
+4. [Conclusiones y próximos pasos](#id111)
 5. [Bibliografía](#id5)
 
 <hr style="color: #7acaff;" width="50%" />
 
 <a name="project"></a>
 
-## Project Description<a name="id1"></a>
+## Descripción del proyecton<a name="id1"></a>
 
 Mediante la aplicación de técnicas de deep-learning he entrenado un algoritmo capaz de identificar autores de obras de arte. El principal motivo para la elección del tema es que permite trabajar con imágenes y redes neuronales.
 
@@ -68,10 +68,10 @@ El recorrido del proyecto es el siguiente:
 
 1. [Análisis del proyecto](#id6)
 2. [EDA](#id7)
-3. [Data Wrangling](#id8)
-4. [Elegir un modelo](#id9)
-5. [Fine Tuning](#id10)
-6. [Conclusiones](#id111)
+4. [Separar *train*,*test* y *validation*](#id77)
+5. [Data Wrangling](#id8)
+6. [Elegir un modelo](#id9)
+7. [Fine Tuning](#id10)
 
 ### Análisis del proyecto<a name="id6"></a>
 
@@ -99,7 +99,7 @@ Enseguida se observa un problema de desbalanceo. Por ejemplo, disponemos de más
 
 <img src="img/countplot5.jpeg" alt="countplot5"/><img src="img/countplot10.jpeg" alt="countplot10"/>
 
-### Separar *train*,*test* y *validation*
+### Separar *train*,*test* y *validation*<a name="id77"></a>
 
 Ahora podemos generar nuestra *X* y nuestra *y* desde la selección realizada en el paso anterior, paa a continuación almacenar el número total de elementos de la variable dependiente, aplicar la función <code>LabelEncoder()</code> para codificar las etiquetas, y crear un diccionario al que después recurrir para las visualizaciones, así como una lista con las etiquetas. A partir de aquí se puede separar el conjunto de entreno, test y validación y crear una secuencia de 0 y 1 para la variable dependiente.
 
@@ -166,10 +166,11 @@ Antes de comenzar a probar modelos habrá que determinar objetivos en los result
 * **recall**: Aporta información sobre la **cantidad** de elementos que es capaz de identificar. Es el resultado de dividir verdaderos positivos entre la suma de verdaderos positivos y falsos negativos.
 * **f1**: El Valor-F combina precision y recall en un solo valor, siendo el resultado de multiplicar por dos el producto de la precision y el recall entre la suma de los mismos.
 
+Mediremos la eficacia del modelo con la *accuracy*.
 
 #### Hiperparámetros<a name="id342"></a>
 
-Los *hiperparámetros* se utilizan para describir la configuración del modelo. No se utilizan para modelar los datos directamente, pero influyen en la capacidad y características de aprendizaje del modelo. 
+Los **hiperparámetros** se utilizan para describir la configuración del modelo. No se utilizan para modelar los datos directamente, pero influyen en la capacidad y características de aprendizaje del modelo. 
 
 Las funciones <code>callback</code> son aquellas que se pasan a otra función como argumento y se ejecutan dentro de esta. En este proyecto se aplicarán las siguientes:
 
@@ -196,7 +197,7 @@ Llegado el momento de compilar nuestro modelo usaremos la función <code>.compil
 * El **optimizador** es otro argumentos requerido en el método de compile(). El proceso de aprendizaje es un problema de optimización global donde los parámetros (pesos y sesgos) se deben ajustar de manera que la función de *loss* se minimice. Para el <code>optimizer</code> se usará:
     * <code>'Adam'</code>: implementa el algoritmo Adam. Se trata de un método de descenso de gradiente estocástico basado en la estimación adaptativa. Es computacionalmente eficiente, con pocos requisitos de memoria y adecuado para problemas con grandes cantidades de datos/parámetros.
 
-En cuanto a métricas, en <code>metrics</code> utilizaremos accuracy y error cuadrático.
+En cuanto a métricas, en <code>metrics</code> utilizaremos *accuracy* y error cuadrático.
 
 
 #### Red Neuronal Simple<a name="id343"></a>
@@ -239,10 +240,9 @@ Una vez entrenado el modelo es posible consultar los resultados que obtenemos co
 
 <img src="img/matriz_snn.jpeg" alt="matriz_snn"/>
 
-Las etiquetas de *Vincent Van Gogh* y *Albrecht Dürer* son las mejor clasificadas, y las que tienen mayor número de observaciones. Se obtiene así un 51% de *accuracy* al pasarle el conjunto de test.
+Las etiquetas de *Vincent Van Gogh* y *Albrecht Dürer* son las mejor clasificadas, y las que tienen mayor número de observaciones. Se obtiene así un 53% de *accuracy* al pasarle el conjunto de test.
 
-Presenta problemas al identificar a *Renoir* como podemos ver en el <code>classification_report</code> y al pasarle la función <code>test_img</code>.
-
+Presenta problemas al identificar a *Renoir* como podemos ver en el <code>classification_report</code>.
 <img src="img/ej_snn.jpeg" alt="ej_snn"/>
 
 ##### Conclusiones
@@ -252,6 +252,7 @@ Tratándose de una red neuronal simple podemos considerar que ha dado muy buenos
 #### Redes Convolucionales<a name="id344"></a>
 
 Las neuronas de las redes neuronales convolucionales corresponden a campos receptivos de las neuronas de la corteza visual de un cerebro biológico. Han demostrado ser buenas para reconocer objetos en una imagen dado que permiten aprovecharla por partes. Contienen varias capas ocultas especializadas que detectan de forma jerarquica, partiendo de líneas para especializarse hasta poder reconocer formas concretas.
+
 Las **convoluciones** consisten en tomar grupos de píxeles próximos y operar entre ellos generando una pequeña matriz o *kernel*. Este *kernel* recorre la imagen generando nuevas matrices, que, a su vez, vuelven a pasar por el proceso de convolución para finalmente obtener un mapa de detección de características.
 
 <img src="img/ej_rnc.png" alt="ej_rnc"/>
@@ -273,7 +274,7 @@ Este modelo ha necesitado **11 *epochs*** de los 100 establecidos al principio, 
 
 ##### Evaluación del modelo
 
-Con estos primeros datos ya es visible la mejora en el coportamiento final de todos los parámetros respecto al modelo anterior. El *loss* es de 1.26, lo que indica un coste alto, la *accuracy* mejora ligeramente empezando a verse aceptable. El *mse* también ha mejorado. Como se ha comentado anteriormente, estas métricas sufrirán modificaciones al usar el modelo con el conjunto de test.
+Con estos primeros datos ya es visible la mejora en el coportamiento final de todos los parámetros respecto al modelo anterior. El *loss* es de 1.006, lo que indica un coste alto, la *accuracy* mejora ligeramente empezando a verse aceptable. El *mse* también ha mejorado. Como se ha comentado anteriormente, estas métricas sufrirán modificaciones al usar el modelo con el conjunto de test.
 
 Podemos observar en la gráfica de *accuracy* cómo el modelo parece que tiene una tendencia a seguir aumentando este parámetro pero se para dado que la función de pérdida no mejora. 
 
@@ -285,7 +286,7 @@ Este modelo presenta unas métricas ligeramente inferiores a la **Red Neuronal S
 
 <img src="img/matriz_rnc.jpeg" alt="matriz_rnc"/>
 
-La imagen de prueba no la clasifica bien, confunde a *Degas* con *Picasso*.
+La imagen de prueba no la clasifica bien, confunde a *Degas* con *Van Gogh*.
 
 <img src="img/rnc_test.jpeg" alt="rnc_test"/>
 
@@ -334,7 +335,7 @@ La imagen aleatoria del conjunto de test no la clasifica bien.
 
 ##### Conclusiones
 
-Usar una red preentrenada sin ajustar no da muy buenos resultados.
+Usar una red preentrenada sin ajustar no da buenos resultados. 
 
 #### DenseNet121<a name="id346"></a>
 
@@ -342,11 +343,7 @@ Una de las principales mejoras que presenta **DenseNet** es que consiguó acorta
 
 <img src="img/densenet_esquema.png" alt="vgg_test"/>
 
-##### Crear la red
-##### Entrenar el modelo
-##### Evaluación del modelo
-##### Predicción del modelo
-##### Conclusiones
+Es la segunda que da peores resultados.
 
 #### InceptionResNETV2 con ImageNet<a name="id347"></a>
 
@@ -374,8 +371,11 @@ En el primer gráfico se presenta la *accuracy* obtenida en cada *epoch*, tanto 
 
 ##### Predicción del modelo
 
+Consigue un 76% de *accuracy* frente al conjunto de test, siendo los 3 artistas más representados los que obtienen mejores métricas.
 
 ##### Conclusiones
+
+Es, con diferencia, la red que de entrada da mejores resultados. Ha completado el entreno en poco tiempo y es la que obtiene mejores métricas en los artistas menos representados.
 
 #### NasNET<a name="id348"></a>
 
@@ -428,10 +428,31 @@ En las siguientes gráficas se puede observar la evolución de las métricas de 
 
 ### Fine Tuning<a name="id10"></a>
 
+Una vez seleccionada la red con mejores resultados puede analizarse su comportamiento al congelar un número diferente de capas, así como al variar el número total de píxeles de la imagen a (250,250) y (300,300).
+
+Cambiando el tamaño de imagen a (250,250) y manteniendo 700 capas congeladas se alcanza un *accuracy* de un **90%** en el conjunto de 5 artistas.
+
+<img src="img/matriz5.jpeg" alt="matriz5"/>
 
 
-## Results<a name="id4"></a>
+Aumentando a (300,300) el tamaño de la imagen y manteniendo el mismo número de capas se logra un **88%** de *accuracy*.
 
+<img src="img/matriz10.jpeg" alt="matriz10"/>
+
+Con una calidad de (300, 300) px y congelando 600 capas en el conjunto total del *dataset* se obtiene un **79%**.
+
+<img src="img/matriz50.jpeg" alt="matriz50"/>
+<img src="img/summary.jpeg" alt="results0"/>
+
+
+## Conclusiones y próximos pasos<a name="#id111"></a>
+
+Considero que los resultados son bastante buenos en general. Trabajar con redes neuronales e imágenes me ha gustado mucho y ha sido una buena toma de contacto para seguir formándome en ese campo.
+
+Como principal conclusión extraería que las herramientas para *transfer-learning* pueden ser más que adecuadas para solucionar este tipo de problemas, ahorrando muchísimo tiempo y recursos.
+El uso de plataformas que permiten la creación de máquinas virtuales con GPU ha acortado el tiempo de los entrenos, permitiendo completar este trabajo y probar más cosas. En mi ordenador hubiese sido imposible.
+
+Como próximos pasos me gustaría añadir el movimiento artístico de las obras al output, con lo que se resolverían los posibles errores en obras de diferentes etapas de un pintor. También me gustaría crear un recomendador. El producto final permitiría, a partir de una imagen, obtener artista, movimiento al que pertenece la obra y una colección de 3 o 5 obras similares.
 
 
 <hr style="color: #7acaff;" width="50%" />
@@ -448,4 +469,3 @@ En las siguientes gráficas se puede observar la evolución de las métricas de 
 <img src="https://www.sketch.ca/sketchPub/uploads/2019/03/radical-art-of-young-people-2000x940.jpg" alt="ART" width="1000" height="50" align="center"/>
 
 <hr style="color: #7acaff;" width="50%" />
-
