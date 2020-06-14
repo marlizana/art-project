@@ -466,6 +466,8 @@ Como próximos pasos me gustaría añadir el movimiento artístico de las obras 
 
 * Lerch, Daniel (2018). Fine-tuning en reconocimiento de imágenes mediante Deep Learning. https://medium.com/neuron4/fine-tuning-en-reconocimiento-de-im%C3%A1genes-mediante-deep-learning-c656ae728d73
 
+*https://www.researchgate.net/publication/334279066_A_survey_on_Image_Data_Augmentation_for_Deep_Learning
+
 <img src="https://www.sketch.ca/sketchPub/uploads/2019/03/radical-art-of-young-people-2000x940.jpg" alt="ART" width="1000" height="50" align="center"/>
 
 <hr style="color: #7acaff;" width="50%" />
